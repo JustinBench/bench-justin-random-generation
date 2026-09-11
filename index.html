@@ -11,12 +11,15 @@
             <h1>The Legend of Zelda Trivia!</h1>
         </header>
         <nav>
-            <!-- No nav :) -->
+            <p class="info-container">In honor of The Legend of Zelda's 40th anniversary this year, I thought I would do a quiz on Legend of Zelda trivia!</p>
         </nav>
         <main>
-            <p class="info">In honor of The Legend of Zelda's 40th anniversary this year, I thought I would do a quiz on Legend of Zelda trivia!</p>
             <section id="question-container">
-                <p class="loading-warning hidden">Loading questions...</p>
+                <p class="loading-warning">Loading questions...</p>
+            </section>
+            <section id="result-container" class="hidden">
+                <h2>Results</h2>
+                <p>You scored <span id="correct-answers">0</span> out of <span id="total-questions"></span>. Now go do something more exciting with your life.</p>
             </section>
         </main>
         <footer>

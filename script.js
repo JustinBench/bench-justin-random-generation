@@ -1,10 +1,13 @@
 const CATEGORY = 15; // Entertainment: Video Games
 const BATCH_SIZE = 50; // OpenTDB's max per request
-const NUM_BATCHES = 3; // fetch 3 batches = up to 150 questions total
+const NUM_BATCHES = 5; // fetch NUM_BATCHES batches = up to 50 * NUM_BATCHES questions total
 const DELAY_MS = 5500; // stay above OpenTDB's 5-second rate limit
 
 const questionsSection = document.querySelector('#question-container');
+const resultSection = document.getElementById('result-container');
 const loadWarning = document.querySelector('.loading-warning');
+const correctText = document.getElementById('correct-answers');
+const totalQuestions = document.getElementById('total-questions');
 
 let zeldaQuestionObjs = [];
 let zeldaQuestions = [];
@@ -69,7 +72,9 @@ function handleAnswerClick(event) {
 }
 
 function showResults() {
-    console.log(`You got ${correctAnswers} out of ${zeldaQuestions.length} correct answers!`);
+    correctText.textContent = correctAnswers;
+    totalQuestions.textContent = zeldaQuestions.length;
+    resultSection.classList.remove('hidden');
 }
 
 function delay(ms) {
@@ -117,7 +122,7 @@ async function fetchAllQuestions() {
 
 async function loadZeldaQuestions() {
 
-    loadWarning.classList.remove("hidden")
+    loadWarning.textContent = 'Loading questions...';
 
     try {
         const allQuestions = await fetchAllQuestions();
@@ -129,10 +134,8 @@ async function loadZeldaQuestions() {
         console.log(`Found ${zeldaQuestionObjs.length} Zelda questions out of ${allQuestions.length} total`);
 
         if (zeldaQuestionObjs.length === 0) {
-        const p = document.createElement('p');
-        p.textContent = 'No Zelda questions found this time — try refreshing.';
+        loadWarning.textContent = 'No Zelda questions found this time — try refreshing.';
         questionsSection.appendChild(p);
-        loadWarning.classList.add('hidden');
         return;
         }
 
@@ -151,7 +154,11 @@ async function loadZeldaQuestions() {
         questionsSection.appendChild(errorP);
     }
 
-    loadWarning.classList.add('hidden');
+    if (zeldaQuestionObjs.length == 1) {
+      loadWarning.textContent = `1 question found from opentdb.com`;
+    } else {
+      loadWarning.textContent = `${zeldaQuestionObjs.length} questions found from opentdb.com`;
+    }
 }
 
 function showQuestion(index) {
