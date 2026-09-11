@@ -3,6 +3,8 @@ const BATCH_SIZE = 50; // OpenTDB's max per request
 const NUM_BATCHES = 5; // fetch NUM_BATCHES batches = up to 50 * NUM_BATCHES questions total
 const DELAY_MS = 5500; // stay above OpenTDB's 5-second rate limit
 
+const source = 'https://opentdb.com'
+
 const questionsSection = document.querySelector('#question-container');
 const resultSection = document.getElementById('result-container');
 const loadWarning = document.querySelector('.loading-warning');
@@ -108,6 +110,7 @@ async function fetchAllQuestions() {
   let allQuestions = [];
 
   for (let i = 0; i < NUM_BATCHES; i++) {
+    loadWarning.textContent = `Loading questions... (${i / NUM_BATCHES * 100}%)`
     console.log(`Fetching batch ${i + 1} of ${NUM_BATCHES}...`);
     const batch = await fetchBatch();
     allQuestions = allQuestions.concat(batch);
@@ -121,21 +124,17 @@ async function fetchAllQuestions() {
 }
 
 async function loadZeldaQuestions() {
-
-    loadWarning.textContent = 'Loading questions...';
-
     try {
         const allQuestions = await fetchAllQuestions();
 
         zeldaQuestionObjs = allQuestions.filter((questionObj) =>
-        questionObj.question.toLowerCase().includes('zelda') && !(questionObj.question.toLowerCase().includes('aunts'));
+        questionObj.question.toLowerCase().includes('zelda') && !(questionObj.question.toLowerCase().includes('aunts'))
         );
 
         console.log(`Found ${zeldaQuestionObjs.length} Zelda questions out of ${allQuestions.length} total`);
 
         if (zeldaQuestionObjs.length === 0) {
         loadWarning.textContent = 'No Zelda questions found this time — try refreshing.';
-        questionsSection.appendChild(p);
         return;
         }
 
@@ -149,15 +148,21 @@ async function loadZeldaQuestions() {
 
     } catch (error) {
         console.error('Fetch failed:', error);
-        const errorP = document.createElement('p');
-        errorP.textContent = `Error fetching questions: ${error.message}`;
-        questionsSection.appendChild(errorP);
+        loadWarning.textContent = `Error fetching questions: ${error.message}`;
     }
 
+    const hyperlink = document.createElement('a');
+    hyperlink.setAttribute("href", source);
+    hyperlink.setAttribute("target", "_blank");
+    hyperlink.classList.add("question-source");
+    hyperlink.textContent = 'opentdb.com';
+
     if (zeldaQuestionObjs.length == 1) {
-      loadWarning.textContent = `1 question found from opentdb.com`;
-    } else {
-      loadWarning.textContent = `${zeldaQuestionObjs.length} questions found from opentdb.com`;
+      loadWarning.textContent = `1 question found from `;
+      loadWarning.appendChild(hyperlink);
+    } else if (zeldaQuestionObjs.length > 1) {
+      loadWarning.textContent = `${zeldaQuestionObjs.length} questions found from `;
+      loadWarning.appendChild(hyperlink);
     }
 }
 
