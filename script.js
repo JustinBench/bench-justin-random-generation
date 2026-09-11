@@ -128,7 +128,7 @@ async function loadZeldaQuestions() {
         const allQuestions = await fetchAllQuestions();
 
         zeldaQuestionObjs = allQuestions.filter((questionObj) =>
-        questionObj.question.toLowerCase().includes('zelda')
+        questionObj.question.toLowerCase().includes('zelda') && !(questionObj.question.toLowerCase().includes('aunts'));
         );
 
         console.log(`Found ${zeldaQuestionObjs.length} Zelda questions out of ${allQuestions.length} total`);
