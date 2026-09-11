@@ -48,3 +48,7 @@ car1.drive(); // Output: Tesla Model 3 is driving.
 - "const" will not allow data to be moved to a new slot of memory. With objects, the const variable is pointing to the objects place in memory, so the object can still be mutated. Trying to reassign the object to be a new object will fail, but data members can be altered. Pointers can't be changed, but data within the object a pointer is pointing at can be changed, pretty much.
 - "let" will allow data to be moved to a new memory slot.
 - "var" creates a global variable regardless of which scope it is used in.
+
+### Fetching
+
+fetch() needs to go get something, so for something like let data = fetch("..."), data is a "promise object" until fetch has actually gotten the thing to put into data. You need to use "await" to make the code wait for fetch() to complete: let data = await fetch("..."). Instead of await, you could also call fetch().then()
