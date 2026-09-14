@@ -124,31 +124,39 @@ async function fetchAllQuestions() {
 }
 
 async function loadZeldaQuestions() {
-    try {
-        const allQuestions = await fetchAllQuestions();
+    let gathering_questions = false
+    while (gathering_questions == false) {
+      try {
+          const allQuestions = await fetchAllQuestions();
 
-        zeldaQuestionObjs = allQuestions.filter((questionObj) =>
-        questionObj.question.toLowerCase().includes('zelda') && !(questionObj.question.toLowerCase().includes('aunts'))
-        );
+          zeldaQuestionObjs = allQuestions.filter((questionObj) =>
+          questionObj.question.toLowerCase().includes('zelda') && !(questionObj.question.toLowerCase().includes('aunts'))
+          );
 
-        console.log(`Found ${zeldaQuestionObjs.length} Zelda questions out of ${allQuestions.length} total`);
+          console.log(`Found ${zeldaQuestionObjs.length} Zelda questions out of ${allQuestions.length} total`);
 
-        if (zeldaQuestionObjs.length === 0) {
-        loadWarning.textContent = 'No Zelda questions found this time — try refreshing.';
-        return;
-        }
+          if (zeldaQuestionObjs.length === 0) {
+          loadWarning.textContent = 'No Zelda questions found this time — trying again...';
+          await delay(DELAY_MS);
+          continue;
+          }
 
-        shuffledQuestions = shuffle(zeldaQuestionObjs)
+          shuffledQuestions = shuffle(zeldaQuestionObjs)
 
-        shuffledQuestions.forEach((questionObj, index, shuffledQuestions) => {
-            createQuestion(questionObj, index + 1);
-        });
+          shuffledQuestions.forEach((questionObj, index, shuffledQuestions) => {
+              createQuestion(questionObj, index + 1);
+          });
+          
+          gathering_questions = true
 
-        showQuestion(currentQuestion);
+          showQuestion(currentQuestion);
 
-    } catch (error) {
-        console.error('Fetch failed:', error);
-        loadWarning.textContent = `Error fetching questions: ${error.message}`;
+      } catch (error) {
+          console.error('Fetch failed:', error);
+          loadWarning.textContent = `Error fetching questions: ${error.message} — Trying again...`;
+          await delay(DELAY_MS);
+          continue;
+      }
     }
 
     const hyperlink = document.createElement('a');

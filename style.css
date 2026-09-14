@@ -1,3 +1,116 @@
+:root {
+    --green-one: #166534;
+    --green-two: #22c55e;
+    --green-three: #14532d;
+    --green-four: #15803d;
+    --yellow-one: #c9a227;
+    --yellow-two: #a98212;
+    --nav-margin: 10px;
+    --title-color: #eeffff;
+    --text-light: #f7f4e9;
+    --text-dark: #183528;
+    --contact-color: #eee2a0;
+    --contact-hover: #ffffff;
+    --contact-active: #c9a227;
+    --contact-visited: #e8d39a;
+    --font-body: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    --font-heading: "Copperplate", "Perpetua", "Book Antiqua", Garamond, serif;
+}
+
+html, body {
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-dark);
+    font-family: var(--font-body);
+}
+
 .hidden {
     display: none;
+}
+
+.question-source {
+    text-decoration: none;
+    color: var(--yellow-one);
+}
+
+.question-source:hover {
+    color: var(--yellow-two);
+}
+
+.question-source:visited {
+    color: var(--yellow-one);
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(var(--green-one), var(--green-two));
+    margin: 0;
+    padding: 2rem 0;
+    border-bottom: 5px solid var(--yellow-one);
+    color: var(--text-light);
+    .crest {
+        height: 4rem;
+    }
+    #title {
+        margin: 0;
+        color: var(--title-color);
+        font-family: var(--font-heading);
+    }
+}
+
+nav {
+    text-align: center;
+    background: linear-gradient(var(--green-three), var(--green-four));
+    border-bottom: 4px solid var(--yellow-two);
+    color: var(--text-light);
+    .info-container {
+        margin: 0;
+        padding-top: var(--nav-margin);
+        padding-bottom: var(--nav-margin);
+    }
+}
+
+main {
+    flex: 1;
+    margin: auto 10%;
+    color: var(--text-dark);
+}
+
+footer {
+    margin: 0;
+    padding-left: 5%;
+    background: linear-gradient(var(--green-two), var(--green-one));
+    border-top: 5px solid var(--yellow-one);
+    color: var(--text-light);
+    ul {
+        padding-inline-start: 0;
+        li {
+            list-style: none;
+            a {
+                color: var(--contact-color);
+                text-decoration: none;
+            }
+            a:visited {
+                color: var(--contact-visited);
+            }
+            a:hover {
+                color: var(--contact-hover);
+            }
+            a:active {
+                color: var(--contact-active);
+            }
+        }
+    }
+    h6 {
+        text-align: center;
+    }
 }
