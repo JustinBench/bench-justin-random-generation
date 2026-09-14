@@ -1,4 +1,8 @@
 # bench-justin-random-generation
+
+Figuring out fetch and organizing questions was a collaboration between me and AI, but I wrote a lot of the Javascript, most of the HTML, and some of the CSS. I got the header, nav, and footer all good, then told AI to just take the styling of the questions and results and loading thing for me. Some images I added myself, and others were added by AI. I didn't make any of the images used, but found them online.
+
+# Notes
 ## Things to know in JavaScript
 
 ### Objects - something with data methods and methods

@@ -7,9 +7,12 @@ const source = 'https://opentdb.com'
 
 const questionsSection = document.querySelector('#question-container');
 const resultSection = document.getElementById('result-container');
-const loadWarning = document.querySelector('.loading-warning');
+const loadWarning = document.querySelector('.load-text');
+const loadImg = document.querySelector('.load-logo');
 const correctText = document.getElementById('correct-answers');
 const totalQuestions = document.getElementById('total-questions');
+const zeroScoreImage = document.getElementById('zero-score-image');
+const perfectScoreImage = document.getElementById('perfect-score-image');
 
 let zeldaQuestionObjs = [];
 let zeldaQuestions = [];
@@ -76,6 +79,11 @@ function handleAnswerClick(event) {
 function showResults() {
     correctText.textContent = correctAnswers;
     totalQuestions.textContent = zeldaQuestions.length;
+    zeroScoreImage.classList.toggle('hidden', correctAnswers !== 0);
+    perfectScoreImage.classList.toggle(
+        'hidden',
+        zeldaQuestions.length === 0 || correctAnswers !== zeldaQuestions.length
+    );
     resultSection.classList.remove('hidden');
 }
 
@@ -111,6 +119,7 @@ async function fetchAllQuestions() {
 
   for (let i = 0; i < NUM_BATCHES; i++) {
     loadWarning.textContent = `Loading questions... (${i / NUM_BATCHES * 100}%)`
+    loadImg.classList.remove('hidden');
     console.log(`Fetching batch ${i + 1} of ${NUM_BATCHES}...`);
     const batch = await fetchBatch();
     allQuestions = allQuestions.concat(batch);
@@ -133,6 +142,15 @@ async function loadZeldaQuestions() {
           questionObj.question.toLowerCase().includes('zelda') && !(questionObj.question.toLowerCase().includes('aunts'))
           );
 
+          zeldaQuestionObjs = [
+            ...new Map(
+              zeldaQuestionObjs.map((questionObj) => [
+                questionObj.question.trim().toLowerCase(),
+                questionObj
+              ])
+            ).values()
+          ];
+
           console.log(`Found ${zeldaQuestionObjs.length} Zelda questions out of ${allQuestions.length} total`);
 
           if (zeldaQuestionObjs.length === 0) {
@@ -146,7 +164,7 @@ async function loadZeldaQuestions() {
           shuffledQuestions.forEach((questionObj, index, shuffledQuestions) => {
               createQuestion(questionObj, index + 1);
           });
-          
+
           gathering_questions = true
 
           showQuestion(currentQuestion);
@@ -172,6 +190,7 @@ async function loadZeldaQuestions() {
       loadWarning.textContent = `${zeldaQuestionObjs.length} questions found from `;
       loadWarning.appendChild(hyperlink);
     }
+    loadImg.classList.add('hidden')
 }
 
 function showQuestion(index) {
