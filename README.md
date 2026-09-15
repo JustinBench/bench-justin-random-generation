@@ -55,4 +55,16 @@ car1.drive(); // Output: Tesla Model 3 is driving.
 
 ### Fetching
 
-fetch() needs to go get something, so for something like let data = fetch("..."), data is a "promise object" until fetch has actually gotten the thing to put into data. You need to use "await" to make the code wait for fetch() to complete: let data = await fetch("..."). Instead of await, you could also call fetch().then()
+fetch() needs to go get something, so for something like let data = fetch("..."), data is a "promise object" until fetch has actually gotten the thing to put into data. You need to use "await" to make the code wait for fetch() to complete: let data = await fetch("..."). Instead of await, you could also call fetch().then("code that comes after")
+
+With then(), you want to do fetch(url).then(() => ("code that comes after")). This is because the code within then() is called, and then() waits to return what the code inside returns. Using a function () => (...) means the function within then() doesn't run until the fetch(url) is complete.
+
+### Async and Other Stuff
+
+'new' creates an object (it's rare though):
+
+let myString = new String; is similar to let myString = "";
+
+You could create a testPromise = new Promise((resolve, reject) => (...)). resolve and reject are functions that run based on if the fetch is successful.
+
+The "await" keyword forces the code to wait until the code following it has been completed. It can also only be used in async functions
